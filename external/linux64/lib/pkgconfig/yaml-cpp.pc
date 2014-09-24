@@ -1,0 +1,11 @@
+prefix=/home/ubuntu/nupic/extensions/core/external/linux64
+exec_prefix=/home/ubuntu/nupic/extensions/core/external/linux64
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: Yaml-cpp
+Description: A YAML parser and emitter for C++
+Version: 0.5.1
+Requires:
+Libs: -L${libdir} -lyaml-cpp
+Cflags: -I${includedir}
