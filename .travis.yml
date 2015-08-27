@@ -107,7 +107,7 @@ install:
   - "make -j3"
   - "make install"
   - "cd $TRAVIS_BUILD_DIR"
-  - "python setup.py install --user --nupic-core-dir=${TRAVIS_BUILD_DIR}/build/release"
+  - "PYTHONPATH=PYTHONPATH=${HOME}/.local/lib/python2.7/site-packages python setup.py install --user --nupic-core-dir=${TRAVIS_BUILD_DIR}/build/release"
 
 script:
   - "cd $TRAVIS_BUILD_DIR/build/scripts"
