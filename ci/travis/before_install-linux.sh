@@ -52,7 +52,7 @@ echo $CC
 
 echo "Installing latest pip"
 cat `which pip`
-pip uninstall pip
+pip uninstall -y pip
 easy_install -U setuptools
 easy_install -U pip
 cat `which pip`
