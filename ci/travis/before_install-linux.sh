@@ -59,9 +59,13 @@ pushd capnproto-c++-0.5.2
 make
 make install
 export LD_LIBRARY_PATH=${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
+export CPPFLAGS="-I${INSTALL_PREFIX}/include"
+export LDFLAGS="-L${INSTALL_PREFIX}/lib ${LDFLAGS}"
 popd
 
-
+printenv | sort
+ls -laFh lib
+ls -laFh include
 
 echo "Installing wheel..."
 pip install wheel || exit
