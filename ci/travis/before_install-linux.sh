@@ -51,8 +51,8 @@ echo $CC
 
 echo "Installing latest pip"
 
-pip install --ignore-installed --upgrade --user setuptools
-pip install --ignore-installed --upgrade --user pip
+pip install --upgrade --user setuptools
+pip install --upgrade --user pip
 ls $HOME/.local/lib/python2.7/site-packages/
 which pip
 pip --version
