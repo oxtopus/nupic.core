@@ -42,7 +42,6 @@ fi
 export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages:$PYTHONPATH
 
 echo $PATH
-echo $PYTHONPATH
 echo $LDFLAGS
 echo $CPPFLAGS
 echo $LD_LIBRARY_PATH
@@ -52,12 +51,14 @@ echo $CC
 
 echo "Installing latest pip"
 cat `which pip`
-pip uninstall -y pip
-easy_install -U setuptools
-easy_install -U pip
+pip install virtualenv
+virtualenv .
+source bin/activate
 cat `which pip`
-ls $HOME/.local/lib/python2.7/site-packages/
-which pip
+pip install --upgrade setuptools
+pip install --upgrade pip
+cat `which pip`
+echo ${PYTHONPATH}
 pip --version
 python -c "import pip; print pip.__version__, pip.__file__"
 
