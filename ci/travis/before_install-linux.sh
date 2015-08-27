@@ -75,6 +75,16 @@ echo "Installing wheel..."
 pip install wheel || exit
 echo "Installing Python dependencies"
 CC=${CC} CXX=${CXX} CFLAGS="-std=gnu++11 ${CFLAGS}" pip install -v pycapnp==0.5.7 --install-option="--force-system-libcapnp"
+
+mkdir pycapnp
+pushd pycapnp
+git init pycapnp
+git pull https://github.com/oxtopus/pycapnp.git gnu++11
+git status
+git log -n 1
+CC=${CC} CXX=${CXX} CFLAGS="-std=gnu++11 ${CFLAGS}" pip install -v --install-option="--force-system-libcapnp" .
+popd
+
 pip install --use-wheel -r bindings/py/requirements.txt || exit
 
 pip install cpp-coveralls
