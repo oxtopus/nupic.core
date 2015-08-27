@@ -80,10 +80,10 @@ pushd pycapnp
 git checkout gnu++11
 git status
 git log -n 1
-CC=${CC} CXX=${CXX} CFLAGS="-std=gnu++11 ${CFLAGS}" pip install -v --install-option="--force-system-libcapnp" .
+CC=${CC} CXX=${CXX} CFLAGS="-std=gnu++11 ${CFLAGS}" python setup.py bdist_wheel --disable-cython --force-system-libcapnp .
 popd
 
-pip install --use-wheel -r bindings/py/requirements.txt || exit
+pip install --wheel-dir=pycapnp/dist --use-wheel -r bindings/py/requirements.txt || exit
 
 pip install cpp-coveralls
 
