@@ -42,6 +42,7 @@ fi
 export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages:$PYTHONPATH
 
 echo $PATH
+echo $PYTHONPATH
 echo $LDFLAGS
 echo $CPPFLAGS
 echo $LD_LIBRARY_PATH
@@ -50,9 +51,11 @@ which cc
 echo $CC
 
 echo "Installing latest pip"
-
-pip install --upgrade --user setuptools
-pip install --upgrade --user pip
+cat `which pip`
+pip uninstall pip
+easy_install -U setuptools
+easy_install -U pip
+cat `which pip`
 ls $HOME/.local/lib/python2.7/site-packages/
 which pip
 pip --version
