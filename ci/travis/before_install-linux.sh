@@ -21,6 +21,8 @@
 # ----------------------------------------------------------------------
 set -o verbose
 set -o xtrace
+set -o errexit
+set -o pipefail
 
 echo
 echo Running before_install-linux.sh...
@@ -52,7 +54,7 @@ echo "Installing Cap'n Proto..."
 curl -O https://capnproto.org/capnproto-c++-0.5.2.tar.gz
 tar zxf capnproto-c++-0.5.2.tar.gz
 pushd capnproto-c++-0.5.2
-./configure --prefix=${HOME}/.local
+./configure --prefix=.
 make
 make install
 popd
