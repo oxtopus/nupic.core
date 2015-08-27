@@ -59,8 +59,10 @@ pushd capnproto-c++-0.5.2
 make
 make install
 export LD_LIBRARY_PATH=${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
+export LD_RUN_PATH=${INSTALL_PREFIX}/lib:${LD_RUN_PATH}
 export CPPFLAGS="-I${INSTALL_PREFIX}/include"
 export LDFLAGS="-L${INSTALL_PREFIX}/lib ${LDFLAGS}"
+export PATH=${PATH}:${INSTALL_PREFIX}/include
 popd
 
 printenv | sort
@@ -70,7 +72,7 @@ ls -laFh include
 echo "Installing wheel..."
 pip install wheel || exit
 echo "Installing Python dependencies"
-pip install pycapnp==0.5.7 --install-option="--force-system-libcapnp"
+pip install -v pycapnp==0.5.7 --install-option="--force-system-libcapnp"
 pip install --use-wheel -r bindings/py/requirements.txt || exit
 
 pip install cpp-coveralls
