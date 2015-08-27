@@ -53,8 +53,9 @@ pip install --upgrade pip
 echo "Installing Cap'n Proto..."
 curl -O https://capnproto.org/capnproto-c++-0.5.2.tar.gz
 tar zxf capnproto-c++-0.5.2.tar.gz
+INSTALL_PREFIX=${PWD}
 pushd capnproto-c++-0.5.2
-./configure --prefix=${PWD}
+./configure --prefix=${INSTALL_PREFIX}
 make
 make install
 popd
