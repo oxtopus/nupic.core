@@ -39,28 +39,14 @@ if [ $CC = 'clang' ]; then
     export CXX='clang++'
 fi
 
-export PYTHONPATH=$HOME/.local/lib/python2.7/site-packages:$PYTHONPATH
+printenv | sort
 
-echo $PATH
-echo $LDFLAGS
-echo $CPPFLAGS
-echo $LD_LIBRARY_PATH
-echo $LD_RUN_PATH
-which cc
-echo $CC
-
-echo "Installing latest pip"
-cat `which pip`
+echo "Setting up python environment"
 pip install virtualenv
 virtualenv .
 source bin/activate
-cat `which pip`
 pip install --upgrade setuptools
 pip install --upgrade pip
-cat `which pip`
-echo ${PYTHONPATH}
-pip --version
-python -c "import pip; print pip.__version__, pip.__file__"
 
 echo "Installing Cap'n Proto..."
 curl -O https://capnproto.org/capnproto-c++-0.5.2.tar.gz
@@ -72,11 +58,11 @@ make install
 popd
 
 echo "Installing wheel..."
-pip install wheel --user || exit
+pip install wheel || exit
 echo "Installing Python dependencies"
-pip install --user pycapnp==0.5.7 --install-option="--force-system-libcapnp"
-pip install --use-wheel --user -r bindings/py/requirements.txt || exit
+pip install pycapnp==0.5.7 --install-option="--force-system-libcapnp"
+pip install --use-wheel -r bindings/py/requirements.txt || exit
 
-pip install cpp-coveralls --user
+pip install cpp-coveralls
 
 
