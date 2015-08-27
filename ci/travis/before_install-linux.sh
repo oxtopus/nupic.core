@@ -78,10 +78,10 @@ echo "Installing Python dependencies"
 curl -O https://pypi.python.org/packages/source/p/pycapnp/pycapnp-0.5.7.tar.gz
 tar zxf pycapnp-0.5.7.tar.gz
 pushd pycapnp-0.5.7
-python setup.py install --force-system-lipcapnp
+python setup.py bdist_wheel --force-cython --force-system-lipcapnp
 popd
 
-pip install --use-wheel -r bindings/py/requirements.txt || exit
+pip install --wheel-dir=pycapnp-0.5.7/dist --use-wheel -r bindings/py/requirements.txt || exit
 
 pip install cpp-coveralls
 
