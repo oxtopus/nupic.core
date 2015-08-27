@@ -30,6 +30,7 @@ env:
   global:
     - NUPICCORE = ${TRAVIS_BUILD_DIR}
     - PATH=${HOME}/.local/bin:${TRAVIS_BUILD_DIR}/python/bin:$PATH
+    - PYTHONPATH=${HOME}.local/lib/python2.7/site-packages/
     - CPPFLAGS=-I${HOME}/.local/include
     - LDFLAGS=-L${HOME}/.local/lib
     - LD_LIBRARY_PATH=${HOME}/.local/lib:$LD_LIBRARY_PATH
