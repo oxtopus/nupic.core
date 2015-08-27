@@ -75,10 +75,9 @@ echo "Installing wheel..."
 pip install wheel || exit
 echo "Installing Python dependencies"
 
-mkdir pycapnp
+git clone https://github.com/oxtopus/pycapnp.git
 pushd pycapnp
-git init pycapnp
-git pull https://github.com/oxtopus/pycapnp.git gnu++11
+git checkout gnu++11
 git status
 git log -n 1
 CC=${CC} CXX=${CXX} CFLAGS="-std=gnu++11 ${CFLAGS}" pip install -v --install-option="--force-system-libcapnp" .
