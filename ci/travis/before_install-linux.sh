@@ -58,7 +58,10 @@ pushd capnproto-c++-0.5.2
 ./configure --prefix=${INSTALL_PREFIX}
 make
 make install
+export LD_LIBRARY_PATH=${INSTALL_PREFIX}/lib:${LD_LIBRARY_PATH}
 popd
+
+
 
 echo "Installing wheel..."
 pip install wheel || exit
