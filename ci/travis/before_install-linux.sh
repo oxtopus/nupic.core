@@ -43,7 +43,6 @@ fi
 
 alias cc=${CC}
 alias c++=${CXX}
-
 printenv | sort
 
 echo "Setting up python environment"
@@ -52,7 +51,6 @@ virtualenv .
 source bin/activate
 pip install --upgrade setuptools
 pip install --upgrade pip
-pip install --upgrade cython
 
 echo "Installing Cap'n Proto..."
 curl -O https://capnproto.org/capnproto-c++-0.5.2.tar.gz
@@ -76,13 +74,8 @@ ls -laFh include
 echo "Installing wheel..."
 pip install wheel || exit
 echo "Installing Python dependencies"
-curl -O https://pypi.python.org/packages/source/p/pycapnp/pycapnp-0.5.7.tar.gz
-tar zxf pycapnp-0.5.7.tar.gz
-pushd pycapnp-0.5.7
-python setup.py bdist_wheel --force-cython --force-system-lipcapnp
-popd
-
-pip install --wheel-dir=pycapnp-0.5.7/dist --use-wheel -r bindings/py/requirements.txt || exit
+CC=${CC} CXX=${CXX} CFLAGS="-std=gnu++11 ${CFLAGS}" pip install -v pycapnp==0.5.7 --install-option="--force-system-libcapnp"
+pip install --use-wheel -r bindings/py/requirements.txt || exit
 
 pip install cpp-coveralls
 
