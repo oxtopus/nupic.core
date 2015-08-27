@@ -51,6 +51,7 @@ virtualenv .
 source bin/activate
 pip install --upgrade setuptools
 pip install --upgrade pip
+pip install --upgrade cython
 
 echo "Installing Cap'n Proto..."
 curl -O https://capnproto.org/capnproto-c++-0.5.2.tar.gz
