@@ -41,6 +41,9 @@ if [ $CC = 'clang' ]; then
     export CXX='clang++'
 fi
 
+alias cc=${CC}
+alias c++=${CXX}
+
 printenv | sort
 
 echo "Setting up python environment"
