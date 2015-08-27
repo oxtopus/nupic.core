@@ -51,7 +51,13 @@ virtualenv .
 source bin/activate
 pip install --upgrade setuptools
 pip install --upgrade pip
-pip install --upgrade cython
+
+echo "Installing wheel..."
+pip install wheel || exit
+echo "Installing Python dependencies"
+pip install -v pycapnp==0.5.7
+pip install --use-wheel -r bindings/py/requirements.txt || exit
+pip install cpp-coveralls
 
 echo "Installing Cap'n Proto..."
 curl -O https://capnproto.org/capnproto-c++-0.5.2.tar.gz
@@ -72,20 +78,5 @@ printenv | sort
 ls -laFh lib
 ls -laFh include
 
-echo "Installing wheel..."
-pip install wheel || exit
-echo "Installing Python dependencies"
-
-git clone https://github.com/oxtopus/pycapnp.git
-pushd pycapnp
-git checkout gnu++11
-git status
-git log -n 1
-CC=${CC} CXX=${CXX} CFLAGS="-std=gnu++11 ${CFLAGS}" python setup.py bdist_wheel --disable-cython --force-system-libcapnp .
-popd
-
-pip install --wheel-dir=pycapnp/dist --use-wheel -r bindings/py/requirements.txt || exit
-
-pip install cpp-coveralls
 
 
