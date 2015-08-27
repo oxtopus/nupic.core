@@ -50,24 +50,13 @@ which cc
 echo $CC
 
 echo "Installing latest pip"
-which pip
-echo ${PYTHONPATH}
-pip install --ignore-installed --user setuptools
-pip install --ignore-installed --user pip
-echo $HOME/.local/lib/python2.7/site-packages
+
+pip install --ignore-installed --upgrade --user setuptools
+pip install --ignore-installed --upgrade --user pip
 ls $HOME/.local/lib/python2.7/site-packages/
-echo "$HOME/.local/bin/pip --version"
-$HOME/.local/bin/pip --version
-echo "which pip"
 which pip
-python -c "import pip; print pip.__version__, pip.__file__"
 pip --version
-echo $HOME
-ls $HOME/.local
-echo "ls .local/bin:"
-ls $HOME/.local/bin
-echo "ls .local/lib/python2.7/site-packages:"
-ls $HOME/.local/lib/python2.7/site-packages
+python -c "import pip; print pip.__version__, pip.__file__"
 
 echo "Installing Cap'n Proto..."
 curl -O https://capnproto.org/capnproto-c++-0.5.2.tar.gz
