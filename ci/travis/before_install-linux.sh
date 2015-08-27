@@ -74,7 +74,6 @@ ls -laFh include
 echo "Installing wheel..."
 pip install wheel || exit
 echo "Installing Python dependencies"
-CC=${CC} CXX=${CXX} CFLAGS="-std=gnu++11 ${CFLAGS}" pip install -v pycapnp==0.5.7 --install-option="--force-system-libcapnp"
 
 mkdir pycapnp
 pushd pycapnp
