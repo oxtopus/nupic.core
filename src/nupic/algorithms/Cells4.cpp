@@ -1042,10 +1042,10 @@ void Cells4::updateInferenceState(const std::vector<UInt> & activeColumns)
     if (_prevInfPatterns.size() > _maxInfBacktrack)
       _prevInfPatterns.pop_front();
     _prevInfPatterns.push_back(activeColumns);
-    if (_verbosity >= 4) {
-      std::cout << "Previous inference patterns: \n";
-      dumpPrevPatterns(_prevInfPatterns);
-    }
+
+    std::cout << "Previous inference patterns: \n";
+    dumpPrevPatterns(_prevInfPatterns);
+
   }
 
   //---------------------------------------------------------------------------
@@ -1058,10 +1058,9 @@ void Cells4::updateInferenceState(const std::vector<UInt> & activeColumns)
   // replay the recent inputs from start cells and see if we can lock onto
   // this current set of inputs that way.
   if (!inSequence) {
-    if (_verbosity >= 3) {
-      std::cout << "Too much unpredicted input, re-tracing back to try and"
-                << "lock on at an earlier timestep.\n";
-    }
+    std::cout << "Too much unpredicted input, re-tracing back to try and"
+              << "lock on at an earlier timestep.\n";
+
     inferBacktrack(activeColumns);
     return;
   }
@@ -1070,10 +1069,9 @@ void Cells4::updateInferenceState(const std::vector<UInt> & activeColumns)
   // Compute the predicted cells and the cell and column confidences
   inSequence = inferPhase2();
   if (!inSequence) {
-    if (_verbosity >= 3) {
-      std::cout << "Not enough predictions going forward, re-tracing back"
-                << "to try and lock on at an earlier timestep.\n";
-    }
+    std::cout << "Not enough predictions going forward, re-tracing back"
+              << "to try and lock on at an earlier timestep.\n";
+
     inferBacktrack(activeColumns);
   }
 }
@@ -1125,7 +1123,9 @@ bool Cells4::inferPhase1(const std::vector<UInt> & activeColumns,
         numPredictedColumns += 1;
       }
       else {
-        //std::cout << "inferPhase1 bursting col=" << activeColumns[i] << "\n";
+        std::cout << "inferPhase1 bursting col=";
+        std::cout << activeColumn;
+        std::cout << "\n";
         for (UInt ci = cellIdx; ci < cellIdx + _nCellsPerCol; ci++)
         {
           _infActiveStateT.set(ci);    // whole column bursts
@@ -1257,21 +1257,20 @@ void Cells4::compute(Real* input, Real* output, bool doInference, bool doLearnin
     if (input[i]) activeColumns.push_back(i);
   }
 
-  // Print active columns
-  if (_verbosity >= 3) {
-    std::cout << "Active cols: ";
-    printActiveColumns(std::cout, activeColumns);
-    std::cout << "\n";
-  }
-
+  std::cout << "Active cols: ";
+  printActiveColumns(std::cout, activeColumns);
+  std::cout << "\n";
 
   //---------------------------------------------------------------------------
   // Update segment duty cycles if we are crossing a "tier"
 
   if (doLearning && Segment::atDutyCycleTier(_nLrnIterations)) {
+    std::cout << "Update segment duty cycles:";
     for (auto & cell : _cells) {
       cell.updateDutyCycle(_nLrnIterations);
     }
+    std::cout << "\n";
+
   }
 
   //---------------------------------------------------------------------------
@@ -1284,9 +1283,14 @@ void Cells4::compute(Real* input, Real* output, bool doInference, bool doLearnin
     _avgInputDensity = COOL_DOWN*_avgInputDensity + (1-COOL_DOWN)*(Real)activeColumns.size();
   }
 
+  std::cout << "_avgInputDensity:";
+  std::cout << _avgInputDensity;
+  std::cout << "\n";
+  
   //---------------------------------------------------------------------------
   // Update the inference state
   if (doInference) {
+    std::cout << "doInference...\n";
     TIMER(inferenceTimer.start());
     updateInferenceState(activeColumns);
     TIMER(inferenceTimer.stop());
@@ -1295,6 +1299,7 @@ void Cells4::compute(Real* input, Real* output, bool doInference, bool doLearnin
   //---------------------------------------------------------------------------
   // Update the learning state
   if (doLearning) {
+    std::cout << "doLearning...\n";
     TIMER(learningTimer.start());
     updateLearningState(activeColumns, input);
     TIMER(learningTimer.stop());
@@ -1327,6 +1332,9 @@ void Cells4::compute(Real* input, Real* output, bool doInference, bool doLearnin
   memset(output, 0, _nCells * sizeof(output[0])); // most output is zero
 #if SOME_STATES_NOT_INDEXED
 #if defined(NTA_ARCH_32)
+  std::cout << "NTA_ARCH_32";
+  std::cout << "\n";
+
   const UInt multipleOf4 = 4 * (_nCells/4);
   UInt i;
   for (i = 0; i < multipleOf4; i += 4) {
@@ -1561,13 +1569,12 @@ void Cells4::applyGlobalDecay()
         }
       }
     }
-    if (_verbosity >= 3) {
-      std::cout << "CPP Global decay decremented " << nSegmentsDecayed
-                << " segments and removed "
-                << nSynapsesRemoved << " synapses\n";
-      std::cout << "_nLrnIterations = " << _nLrnIterations << ", _maxAge = "
-                << _maxAge << ", globalDecay = " << _globalDecay << "\n";
-    }
+    std::cout << "CPP Global decay decremented " << nSegmentsDecayed
+              << " segments and removed "
+              << nSynapsesRemoved << " synapses\n";
+    std::cout << "_nLrnIterations = " << _nLrnIterations << ", _maxAge = "
+              << _maxAge << ", globalDecay = " << _globalDecay << "\n";
+
   } // (_globalDecay)
 }
 
@@ -1606,14 +1613,12 @@ void Cells4::adaptSegment(const SegmentUpdate& update)
 
     Segment& segment = _cells[cellIdx][segIdx];
 
-    if (_verbosity >= 4) {
-      UInt col =  (UInt) (cellIdx / _nCellsPerCol);
-      UInt cell = cellIdx - col*_nCellsPerCol;
-      std::cout << "Reinforcing segment " << segIdx << " for cell["
-                << col<< "," << cell << "]\n     before: ";
-      segment.print(std::cout, _nCellsPerCol);
-      std::cout << std::endl;
-    }
+    UInt col =  (UInt) (cellIdx / _nCellsPerCol);
+    UInt cell = cellIdx - col*_nCellsPerCol;
+    std::cout << "Reinforcing segment " << segIdx << " for cell["
+              << col<< "," << cell << "]\n     before: ";
+    segment.print(std::cout, _nCellsPerCol);
+    std::cout << std::endl;
 
     // Update last active iteration and duty cycle related counts
     segment._lastActiveIteration = _nLrnIterations;
