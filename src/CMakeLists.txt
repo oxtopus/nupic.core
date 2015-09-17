@@ -36,10 +36,10 @@ if( POLICY CMP0046 )
   # is not found. The old policy didn't care and continued through configuration
   cmake_policy(SET CMP0046 OLD)
 endif()
-  
+
 if( POLICY CMP0054 )
-  # The OLD behavior for this policy is to dereference variables and interpret 
-  # keywords even if they are quoted or bracketed. The NEW behavior is to not 
+  # The OLD behavior for this policy is to dereference variables and interpret
+  # keywords even if they are quoted or bracketed. The NEW behavior is to not
   # dereference variables or interpret keywords that have been quoted or bracketed.
   cmake_policy(SET CMP0054 OLD)
 endif()
@@ -132,7 +132,7 @@ if("${PROJECT_BUILD_ARTIFACTS_DIR}" STREQUAL "")
 endif()
 
 find_package(PythonInterp REQUIRED)
-execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c" 
+execute_process(COMMAND "${PYTHON_EXECUTABLE}" "-c"
                         "import numpy; import os; import sys; sys.stdout.write(os.path.dirname(numpy.get_include()))"
                          OUTPUT_VARIABLE NUMPY_CORE)
 include_directories(SYSTEM
@@ -560,6 +560,15 @@ set_target_properties(${EXECUTABLE_HELLOSPTP} PROPERTIES COMPILE_FLAGS ${COMMON_
 set_target_properties(${EXECUTABLE_HELLOSPTP} PROPERTIES LINK_FLAGS "${COMMON_LINK_FLAGS}")
 add_dependencies(${EXECUTABLE_HELLOSPTP} ${COMMON_LIBS})
 
+#
+# Cells4 determinism
+#
+set(EXECUTABLE_CELLS4DETERMINISM cells4_determinism_test)
+add_executable(${EXECUTABLE_CELLS4DETERMINISM} examples/algorithms/cells4_determinism_test.cpp)
+target_link_libraries(${EXECUTABLE_CELLS4DETERMINISM} ${COMMON_LIBS})
+set_target_properties(${EXECUTABLE_CELLS4DETERMINISM} PROPERTIES COMPILE_FLAGS ${COMMON_COMPILE_FLAGS})
+set_target_properties(${EXECUTABLE_CELLS4DETERMINISM} PROPERTIES LINK_FLAGS "${COMMON_LINK_FLAGS}")
+add_dependencies(${EXECUTABLE_CELLS4DETERMINISM} ${COMMON_LIBS})
 
 #
 # Setup gtests
@@ -725,6 +734,7 @@ install(TARGETS
         ${EXECUTABLE_HELLOSPTP}
         ${EXECUTABLE_PROTOTEST}
         ${EXECUTABLE_GTESTS}
+        ${EXECUTABLE_CELLS4DETERMINISM}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
