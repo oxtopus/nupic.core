@@ -20,7 +20,7 @@ if [ "${CC}" = "clang" ]; then
     if [ -z "${CXX}" ]; then
         CXX="clang++"
     fi
-    COMPILER_PACKAGES="clang-3.4" # Ubuntu-specific apt package name
+    COMPILER_PACKAGES="clang-3.8" # Ubuntu-specific apt package name
 else
     if [ -z "${CXX}" ]; then
         CXX="g++"
